@@ -9,16 +9,17 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QMainWindow, QLabel, QWidget, QVBoxLayout
 
 
-class Ui_Main(object):
-    def setupUi(self, Main):
-        Main.setObjectName("Main")
-        Main.resize(1009, 810)
-        Main.setMinimumSize(QtCore.QSize(1009, 810))
-        Main.setMaximumSize(QtCore.QSize(1009, 810))
-        Main.setStyleSheet("background: rgb(118, 118, 118)")
-        self.centralwidget = QtWidgets.QWidget(Main)
+class MainWindowClass(QMainWindow):
+    def setupUi(self, MainWindow):
+        MainWindow.setObjectName("MainWindow")
+        MainWindow.resize(1009, 854)
+        MainWindow.setMaximumSize(QtCore.QSize(1009, 854))
+        MainWindow.setStyleSheet("background: rgb(118, 118, 118)")
+        self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
         self.gridLayout.setObjectName("gridLayout")
@@ -78,7 +79,7 @@ class Ui_Main(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.main_plan.sizePolicy().hasHeightForWidth())
         self.main_plan.setSizePolicy(sizePolicy)
-        self.main_plan.setMinimumSize(QtCore.QSize(700, 700))
+        self.main_plan.setMinimumSize(QtCore.QSize(700, 750))
         self.main_plan.setStyleSheet("background: rgb(0, 0, 0)")
         self.main_plan.setText("")
         self.main_plan.setObjectName("main_plan")
@@ -97,7 +98,7 @@ class Ui_Main(object):
         self.scroll_of_furniture.setWidgetResizable(True)
         self.scroll_of_furniture.setObjectName("scroll_of_furniture")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 278, 716))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 278, 760))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.horizontalLayoutWidget_3 = QtWidgets.QWidget(self.scrollAreaWidgetContents)
         self.horizontalLayoutWidget_3.setGeometry(QtCore.QRect(10, 10, 261, 71))
@@ -153,7 +154,11 @@ class Ui_Main(object):
         self.change_button.setObjectName("change_button")
         self.verticalLayout_5.addWidget(self.change_button)
         self.horizontalLayout_2.addLayout(self.verticalLayout_5)
+
         self.scroll_of_furniture.setWidget(self.scrollAreaWidgetContents)
+
+
+
         self.verticalLayout_4.addWidget(self.scroll_of_furniture)
         self.add_furniture = QtWidgets.QPushButton(self.centralwidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
@@ -173,26 +178,45 @@ class Ui_Main(object):
         self.verticalLayout_4.addWidget(self.add_furniture)
         self.horizontalLayout.addLayout(self.verticalLayout_4)
         self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 1)
-        Main.setCentralWidget(self.centralwidget)
-        self.menubar = QtWidgets.QMenuBar(Main)
+        MainWindow.setCentralWidget(self.centralwidget)
+        self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1009, 21))
         self.menubar.setObjectName("menubar")
-        Main.setMenuBar(self.menubar)
-        self.statusbar = QtWidgets.QStatusBar(Main)
+        MainWindow.setMenuBar(self.menubar)
+        self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
-        Main.setStatusBar(self.statusbar)
+        MainWindow.setStatusBar(self.statusbar)
 
-        self.retranslateUi(Main)
-        QtCore.QMetaObject.connectSlotsByName(Main)
+        self.retranslateUi(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-    def retranslateUi(self, Main):
+    def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        Main.setWindowTitle(_translate("Main", "MainWindow"))
-        self.save_button.setText(_translate("Main", "Сохранить  дизайн"))
-        self.load_button.setText(_translate("Main", "Загрузить дизайн"))
-        self.change_make.setText(_translate("Main", "Изменить макет квартиры"))
-        self.auto_razvodchic.setText(_translate("Main", "Автоматически расставить "))
-        self.name_furniture.setText(_translate("Main", "Название"))
-        self.add_button.setText(_translate("Main", "add"))
-        self.change_button.setText(_translate("Main", "change"))
-        self.add_furniture.setText(_translate("Main", "Добавить свою мебель"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        self.save_button.setText(_translate("MainWindow", "Сохранить  дизайн"))
+        self.load_button.setText(_translate("MainWindow", "Загрузить дизайн"))
+        self.change_make.setText(_translate("MainWindow", "Изменить макет квартиры"))
+        self.auto_razvodchic.setText(_translate("MainWindow", "Автоматически расставить "))
+        self.name_furniture.setText(_translate("MainWindow", "Название"))
+        self.add_button.setText(_translate("MainWindow", "add"))
+        self.change_button.setText(_translate("MainWindow", "change"))
+        self.add_furniture.setText(_translate("MainWindow", "Добавить свою мебель"))
+        self.init_sctol()
+
+
+    def init_sctol(self):
+        self.widget = QWidget()  # Widget that contains the collection of Vertical Box
+        self.vbox = QVBoxLayout()
+        for i in range(1,50):
+                object = QLabel("TextLabel")
+                self.vbox.addWidget(object)
+
+        self.widget.setLayout(self.vbox)
+
+        #Scroll Area Properties
+        self.scroll_of_furniture.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        self.scroll_of_furniture.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.scroll_of_furniture.setWidgetResizable(True)
+        self.scroll_of_furniture.setWidget(self.widget)
+
+
