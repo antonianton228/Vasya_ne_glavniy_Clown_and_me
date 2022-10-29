@@ -34,43 +34,43 @@ class MainWindowClass(QMainWindow):
         self.save_load_horisontal_box.setObjectName("save_load_horisontal_box")
         self.save_button = QtWidgets.QPushButton(self.centralwidget)
         self.save_button.setStyleSheet("QPushButton {\n"
-"  background: rgb(255, 0, 0);\n"
-"}\n"
-"\n"
-"QPushButton:pressed{\n"
-"  background: rgb(38, 132, 255)\n"
-"}")
+                                       "  background: rgb(255, 0, 0);\n"
+                                       "}\n"
+                                       "\n"
+                                       "QPushButton:pressed{\n"
+                                       "  background: rgb(38, 132, 255)\n"
+                                       "}")
         self.save_button.setObjectName("save_button")
         self.save_load_horisontal_box.addWidget(self.save_button)
         self.load_button = QtWidgets.QPushButton(self.centralwidget)
         self.load_button.setStyleSheet("QPushButton {\n"
-"  background: rgb(255, 0, 0);\n"
-"}\n"
-"\n"
-"QPushButton:pressed{\n"
-"  background: rgb(38, 132, 255)\n"
-"}")
+                                       "  background: rgb(255, 0, 0);\n"
+                                       "}\n"
+                                       "\n"
+                                       "QPushButton:pressed{\n"
+                                       "  background: rgb(38, 132, 255)\n"
+                                       "}")
         self.load_button.setObjectName("load_button")
         self.save_load_horisontal_box.addWidget(self.load_button)
         self.verticalLayout.addLayout(self.save_load_horisontal_box)
         self.change_make = QtWidgets.QPushButton(self.centralwidget)
         self.change_make.setStyleSheet("QPushButton {\n"
-"  background: rgb(255, 0, 0);\n"
-"}\n"
-"\n"
-"QPushButton:pressed{\n"
-"  background: rgb(38, 132, 255)\n"
-"}")
+                                       "  background: rgb(255, 0, 0);\n"
+                                       "}\n"
+                                       "\n"
+                                       "QPushButton:pressed{\n"
+                                       "  background: rgb(38, 132, 255)\n"
+                                       "}")
         self.change_make.setObjectName("change_make")
         self.verticalLayout.addWidget(self.change_make)
         self.auto_razvodchic = QtWidgets.QPushButton(self.centralwidget)
         self.auto_razvodchic.setStyleSheet("QPushButton {\n"
-"  background: rgb(255, 0, 0);\n"
-"}\n"
-"\n"
-"QPushButton:pressed{\n"
-"  background: rgb(38, 132, 255)\n"
-"}")
+                                           "  background: rgb(255, 0, 0);\n"
+                                           "}\n"
+                                           "\n"
+                                           "QPushButton:pressed{\n"
+                                           "  background: rgb(38, 132, 255)\n"
+                                           "}")
         self.auto_razvodchic.setObjectName("auto_razvodchic")
         self.verticalLayout.addWidget(self.auto_razvodchic)
         self.main_plan = QtWidgets.QLabel(self.centralwidget)
@@ -88,7 +88,10 @@ class MainWindowClass(QMainWindow):
         self.horizontalLayout.addLayout(self.verticalLayout_2)
         self.verticalLayout_4 = QtWidgets.QVBoxLayout()
         self.verticalLayout_4.setObjectName("verticalLayout_4")
+
         self.scroll_of_furniture = QtWidgets.QScrollArea(self.centralwidget)
+        self.init_sctol()
+
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -135,29 +138,27 @@ class MainWindowClass(QMainWindow):
         self.verticalLayout_5.setObjectName("verticalLayout_5")
         self.add_button = QtWidgets.QPushButton(self.horizontalLayoutWidget_3)
         self.add_button.setStyleSheet("QPushButton {\n"
-"  background: rgb(255, 0, 0);\n"
-"}\n"
-"\n"
-"QPushButton:pressed{\n"
-"  background: rgb(38, 132, 255)\n"
-"}")
+                                      "  background: rgb(255, 0, 0);\n"
+                                      "}\n"
+                                      "\n"
+                                      "QPushButton:pressed{\n"
+                                      "  background: rgb(38, 132, 255)\n"
+                                      "}")
         self.add_button.setObjectName("add_button")
         self.verticalLayout_5.addWidget(self.add_button)
         self.change_button = QtWidgets.QPushButton(self.horizontalLayoutWidget_3)
         self.change_button.setStyleSheet("QPushButton {\n"
-"  background: rgb(255, 0, 0);\n"
-"}\n"
-"\n"
-"QPushButton:pressed{\n"
-"  background: rgb(38, 132, 255)\n"
-"}")
+                                         "  background: rgb(255, 0, 0);\n"
+                                         "}\n"
+                                         "\n"
+                                         "QPushButton:pressed{\n"
+                                         "  background: rgb(38, 132, 255)\n"
+                                         "}")
         self.change_button.setObjectName("change_button")
         self.verticalLayout_5.addWidget(self.change_button)
         self.horizontalLayout_2.addLayout(self.verticalLayout_5)
 
         self.scroll_of_furniture.setWidget(self.scrollAreaWidgetContents)
-
-
 
         self.verticalLayout_4.addWidget(self.scroll_of_furniture)
         self.add_furniture = QtWidgets.QPushButton(self.centralwidget)
@@ -168,12 +169,12 @@ class MainWindowClass(QMainWindow):
         self.add_furniture.setSizePolicy(sizePolicy)
         self.add_furniture.setMinimumSize(QtCore.QSize(280, 0))
         self.add_furniture.setStyleSheet("QPushButton {\n"
-"  background: rgb(255, 0, 0);\n"
-"}\n"
-"\n"
-"QPushButton:pressed{\n"
-"  background: rgb(255, 255, 0);\n"
-"}")
+                                         "  background: rgb(255, 0, 0);\n"
+                                         "}\n"
+                                         "\n"
+                                         "QPushButton:pressed{\n"
+                                         "  background: rgb(255, 255, 0);\n"
+                                         "}")
         self.add_furniture.setObjectName("add_furniture")
         self.verticalLayout_4.addWidget(self.add_furniture)
         self.horizontalLayout.addLayout(self.verticalLayout_4)
@@ -201,22 +202,17 @@ class MainWindowClass(QMainWindow):
         self.add_button.setText(_translate("MainWindow", "add"))
         self.change_button.setText(_translate("MainWindow", "change"))
         self.add_furniture.setText(_translate("MainWindow", "Добавить свою мебель"))
-        self.init_sctol()
-
 
     def init_sctol(self):
-        self.widget = QWidget()  # Widget that contains the collection of Vertical Box
+        self.widget = QWidget()
         self.vbox = QVBoxLayout()
-        for i in range(1,50):
-                object = QLabel("TextLabel")
-                self.vbox.addWidget(object)
+        for i in range(1, 50):
+            self.vbox.addWidget(self.verticalLayout_4)
 
         self.widget.setLayout(self.vbox)
 
-        #Scroll Area Properties
+        # Scroll Area Properties
         self.scroll_of_furniture.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
         self.scroll_of_furniture.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.scroll_of_furniture.setWidgetResizable(True)
         self.scroll_of_furniture.setWidget(self.widget)
-
-
