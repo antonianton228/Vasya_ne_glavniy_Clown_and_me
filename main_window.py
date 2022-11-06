@@ -90,7 +90,6 @@ class MainWindowClass(QMainWindow):
         self.verticalLayout_4.setObjectName("verticalLayout_4")
 
         self.scroll_of_furniture = QtWidgets.QScrollArea(self.centralwidget)
-        self.init_sctol()
 
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -103,60 +102,8 @@ class MainWindowClass(QMainWindow):
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
         self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 278, 760))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
-        self.horizontalLayoutWidget_3 = QtWidgets.QWidget(self.scrollAreaWidgetContents)
-        self.horizontalLayoutWidget_3.setGeometry(QtCore.QRect(10, 10, 261, 71))
-        self.horizontalLayoutWidget_3.setObjectName("horizontalLayoutWidget_3")
-        self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget_3)
-        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
-        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.img_furniture = QtWidgets.QLabel(self.horizontalLayoutWidget_3)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.img_furniture.sizePolicy().hasHeightForWidth())
-        self.img_furniture.setSizePolicy(sizePolicy)
-        self.img_furniture.setMinimumSize(QtCore.QSize(75, 0))
-        self.img_furniture.setStyleSheet("background: rgb(0, 0, 0)")
-        self.img_furniture.setText("")
-        self.img_furniture.setObjectName("img_furniture")
-        self.horizontalLayout_2.addWidget(self.img_furniture)
-        self.name_furniture = QtWidgets.QLabel(self.horizontalLayoutWidget_3)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.name_furniture.sizePolicy().hasHeightForWidth())
-        self.name_furniture.setSizePolicy(sizePolicy)
-        self.name_furniture.setMinimumSize(QtCore.QSize(10, 0))
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        font.setBold(True)
-        font.setWeight(75)
-        self.name_furniture.setFont(font)
-        self.name_furniture.setObjectName("name_furniture")
-        self.horizontalLayout_2.addWidget(self.name_furniture)
-        self.verticalLayout_5 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_5.setObjectName("verticalLayout_5")
-        self.add_button = QtWidgets.QPushButton(self.horizontalLayoutWidget_3)
-        self.add_button.setStyleSheet("QPushButton {\n"
-                                      "  background: rgb(255, 0, 0);\n"
-                                      "}\n"
-                                      "\n"
-                                      "QPushButton:pressed{\n"
-                                      "  background: rgb(38, 132, 255)\n"
-                                      "}")
-        self.add_button.setObjectName("add_button")
-        self.verticalLayout_5.addWidget(self.add_button)
-        self.change_button = QtWidgets.QPushButton(self.horizontalLayoutWidget_3)
-        self.change_button.setStyleSheet("QPushButton {\n"
-                                         "  background: rgb(255, 0, 0);\n"
-                                         "}\n"
-                                         "\n"
-                                         "QPushButton:pressed{\n"
-                                         "  background: rgb(38, 132, 255)\n"
-                                         "}")
-        self.change_button.setObjectName("change_button")
-        self.verticalLayout_5.addWidget(self.change_button)
-        self.horizontalLayout_2.addLayout(self.verticalLayout_5)
+
+        self.init_scroll()
 
         self.scroll_of_furniture.setWidget(self.scrollAreaWidgetContents)
 
@@ -203,16 +150,61 @@ class MainWindowClass(QMainWindow):
         self.change_button.setText(_translate("MainWindow", "change"))
         self.add_furniture.setText(_translate("MainWindow", "Добавить свою мебель"))
 
-    def init_sctol(self):
-        self.widget = QWidget()
-        self.vbox = QVBoxLayout()
-        for i in range(1, 50):
-            self.vbox.addWidget(self.verticalLayout_4)
-
-        self.widget.setLayout(self.vbox)
-
-        # Scroll Area Properties
-        self.scroll_of_furniture.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
-        self.scroll_of_furniture.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self.scroll_of_furniture.setWidgetResizable(True)
-        self.scroll_of_furniture.setWidget(self.widget)
+    def init_scroll(self):
+        self.layuot_v = QVBoxLayout()
+        name = 'Название'
+        n = 100
+        for i in range(n):
+            self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
+            self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
+            self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+            self.img_furniture = QtWidgets.QLabel()
+            sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Preferred)
+            sizePolicy.setHorizontalStretch(0)
+            sizePolicy.setVerticalStretch(0)
+            sizePolicy.setHeightForWidth(self.img_furniture.sizePolicy().hasHeightForWidth())
+            self.img_furniture.setSizePolicy(sizePolicy)
+            self.img_furniture.setMinimumSize(QtCore.QSize(75, 0))
+            self.img_furniture.setStyleSheet("background: rgb(0, 0, 0)")
+            self.img_furniture.setText("")
+            self.img_furniture.setObjectName("img_furniture")
+            self.horizontalLayout_2.addWidget(self.img_furniture)
+            self.name_furniture = QtWidgets.QLabel(name)
+            sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Preferred)
+            sizePolicy.setHorizontalStretch(0)
+            sizePolicy.setVerticalStretch(0)
+            sizePolicy.setHeightForWidth(self.name_furniture.sizePolicy().hasHeightForWidth())
+            self.name_furniture.setSizePolicy(sizePolicy)
+            self.name_furniture.setMinimumSize(QtCore.QSize(10, 0))
+            font = QtGui.QFont()
+            font.setPointSize(12)
+            font.setBold(True)
+            font.setWeight(75)
+            self.name_furniture.setFont(font)
+            self.name_furniture.setObjectName("name_furniture")
+            self.horizontalLayout_2.addWidget(self.name_furniture)
+            self.verticalLayout_5 = QtWidgets.QVBoxLayout()
+            self.verticalLayout_5.setObjectName("verticalLayout_5")
+            self.add_button = QtWidgets.QPushButton('add')
+            self.add_button.setStyleSheet("QPushButton {\n"
+                                          "  background: rgb(255, 0, 0);\n"
+                                          "}\n"
+                                          "\n"
+                                          "QPushButton:pressed{\n"
+                                          "  background: rgb(38, 132, 255)\n"
+                                          "}")
+            self.add_button.setObjectName("add_button")
+            self.verticalLayout_5.addWidget(self.add_button)
+            self.change_button = QtWidgets.QPushButton('change')
+            self.change_button.setStyleSheet("QPushButton {\n"
+                                             "  background: rgb(255, 0, 0);\n"
+                                             "}\n"
+                                             "\n"
+                                             "QPushButton:pressed{\n"
+                                             "  background: rgb(38, 132, 255)\n"
+                                             "}")
+            self.change_button.setObjectName("change_button")
+            self.verticalLayout_5.addWidget(self.change_button)
+            self.horizontalLayout_2.addLayout(self.verticalLayout_5)
+            self.layuot_v.addLayout(self.horizontalLayout_2, i)
+        self.scrollAreaWidgetContents.setLayout(self.layuot_v)
