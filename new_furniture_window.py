@@ -9,13 +9,30 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QMainWindow, QLabel, QWidget, QVBoxLayout, QApplication, QDialog
+from PyQt5.QtCore import Qt, QPoint, QObject
+from PyQt5.QtGui import QPen, QPainter, QImage, QPixmap
 
 
-class NewFurnitureClass(object):
-    def setupUi(self, Form):
+
+
+class NewFurnitureClass(QDialog):
+    def __init__(self):
+        super().__init__()
+        self.setupUi()
+
+    def setupUi(self):
+        Form = self
         Form.setObjectName("Form")
         Form.resize(739, 626)
         Form.setStyleSheet("background: rgb(118, 118, 118)")
+
+
+        self.drawing = False
+        self.brushSize = 2
+        self.brushColor = Qt.white
+        self.lastPoint = QPoint()
+
         self.gridLayout = QtWidgets.QGridLayout(Form)
         self.gridLayout.setObjectName("gridLayout")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
@@ -30,6 +47,7 @@ class NewFurnitureClass(object):
         self.furniture_plan.setStyleSheet("background: rgb(0, 0, 0)")
         self.furniture_plan.setText("")
         self.furniture_plan.setObjectName("furniture_plan")
+        self.furniture_plan.setMouseTracking(True)
         self.horizontalLayout_2.addWidget(self.furniture_plan)
         self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setSizeConstraint(QtWidgets.QLayout.SetMinimumSize)
@@ -109,3 +127,28 @@ class NewFurnitureClass(object):
         self.color_button.setText(_translate("Form", "Цвет"))
         self.apply_button.setText(_translate("Form", "Применить"))
         self.exit_button.setText(_translate("Form", "Выйти"))
+        print(111)
+
+    # def mousePressEvent(self, event):
+    #     if event.button() == Qt.LeftButton:
+    #         self.drawing = True
+    #         self.lastPoint = event.pos()
+    #
+    #
+    # def mouseMoveEvent(self, event):
+    #     print(11111)
+    #     if (event.buttons() & Qt.LeftButton) & self.drawing:
+    #         painter = QPainter(self.image)
+    #         painter.setPen(QPen(self.brushColor, self.brushSize,
+    #                             Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
+    #         painter.drawLine(self.lastPoint, event.pos())
+    #         self.lastPoint = event.pos()
+    #         self.update()
+    #
+    # def mouseReleaseEvent(self, event):
+    #     if event.button() == Qt.LeftButton:
+    #         self.drawing = False
+    #
+    # def paintEvent(self, event):
+    #     canvasPainter = QPainter(self)
+    #     canvasPainter.drawImage(self.rect(), self.image, self.image.rect())

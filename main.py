@@ -11,8 +11,6 @@ from new_furniture_window import NewFurnitureClass
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    MainWindow = QMainWindow()
     ui = MainWindowClass()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
+    ui.show()
     sys.exit(app.exec_())
