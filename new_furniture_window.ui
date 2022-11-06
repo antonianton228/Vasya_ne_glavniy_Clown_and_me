@@ -79,6 +79,9 @@ QPushButton:pressed{
         </widget>
        </item>
        <item>
+        <widget class="QComboBox" name="comboBox"/>
+       </item>
+       <item>
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
           <widget class="QPushButton" name="color_button">
@@ -108,7 +111,7 @@ QPushButton:pressed{
      </item>
     </layout>
    </item>
-   <item row="1" column="0">
+   <item row="2" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QPushButton" name="apply_button">
@@ -143,6 +146,13 @@ QPushButton:pressed{
       </widget>
      </item>
     </layout>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLineEdit" name="lineEdit">
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

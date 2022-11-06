@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '111.ui'
+# Form implementation generated from reading ui file 'new_furniture_window.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.7
 #
@@ -14,61 +14,96 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(400, 300)
-        self.horizontalLayoutWidget_3 = QtWidgets.QWidget(Form)
-        self.horizontalLayoutWidget_3.setGeometry(QtCore.QRect(-30, 90, 261, 71))
-        self.horizontalLayoutWidget_3.setObjectName("horizontalLayoutWidget_3")
-        self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget_3)
-        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
+        Form.resize(739, 626)
+        Form.setStyleSheet("background: rgb(118, 118, 118)")
+        self.gridLayout = QtWidgets.QGridLayout(Form)
+        self.gridLayout.setObjectName("gridLayout")
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.img_furniture = QtWidgets.QLabel(self.horizontalLayoutWidget_3)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Preferred)
+        self.furniture_plan = QtWidgets.QLabel(Form)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.img_furniture.sizePolicy().hasHeightForWidth())
-        self.img_furniture.setSizePolicy(sizePolicy)
-        self.img_furniture.setMinimumSize(QtCore.QSize(75, 0))
-        self.img_furniture.setStyleSheet("background: rgb(0, 0, 0)")
-        self.img_furniture.setText("")
-        self.img_furniture.setObjectName("img_furniture")
-        self.horizontalLayout_2.addWidget(self.img_furniture)
-        self.name_furniture = QtWidgets.QLabel(self.horizontalLayoutWidget_3)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.name_furniture.sizePolicy().hasHeightForWidth())
-        self.name_furniture.setSizePolicy(sizePolicy)
-        self.name_furniture.setMinimumSize(QtCore.QSize(10, 0))
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        font.setBold(True)
-        font.setWeight(75)
-        self.name_furniture.setFont(font)
-        self.name_furniture.setObjectName("name_furniture")
-        self.horizontalLayout_2.addWidget(self.name_furniture)
-        self.verticalLayout_5 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_5.setObjectName("verticalLayout_5")
-        self.add_button = QtWidgets.QPushButton(self.horizontalLayoutWidget_3)
-        self.add_button.setStyleSheet("QPushButton {\n"
+        sizePolicy.setHeightForWidth(self.furniture_plan.sizePolicy().hasHeightForWidth())
+        self.furniture_plan.setSizePolicy(sizePolicy)
+        self.furniture_plan.setMinimumSize(QtCore.QSize(600, 0))
+        self.furniture_plan.setStyleSheet("background: rgb(0, 0, 0)")
+        self.furniture_plan.setText("")
+        self.furniture_plan.setObjectName("furniture_plan")
+        self.horizontalLayout_2.addWidget(self.furniture_plan)
+        self.verticalLayout = QtWidgets.QVBoxLayout()
+        self.verticalLayout.setSizeConstraint(QtWidgets.QLayout.SetMinimumSize)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.rendo_button = QtWidgets.QPushButton(Form)
+        self.rendo_button.setStyleSheet("QPushButton {\n"
 "  background: rgb(255, 0, 0);\n"
 "}\n"
 "\n"
 "QPushButton:pressed{\n"
 "  background: rgb(38, 132, 255)\n"
 "}")
-        self.add_button.setObjectName("add_button")
-        self.verticalLayout_5.addWidget(self.add_button)
-        self.change_button = QtWidgets.QPushButton(self.horizontalLayoutWidget_3)
-        self.change_button.setStyleSheet("QPushButton {\n"
+        self.rendo_button.setObjectName("rendo_button")
+        self.verticalLayout.addWidget(self.rendo_button)
+        self.undo_button = QtWidgets.QPushButton(Form)
+        self.undo_button.setStyleSheet("QPushButton {\n"
 "  background: rgb(255, 0, 0);\n"
 "}\n"
 "\n"
 "QPushButton:pressed{\n"
 "  background: rgb(38, 132, 255)\n"
 "}")
-        self.change_button.setObjectName("change_button")
-        self.verticalLayout_5.addWidget(self.change_button)
-        self.horizontalLayout_2.addLayout(self.verticalLayout_5)
+        self.undo_button.setObjectName("undo_button")
+        self.verticalLayout.addWidget(self.undo_button)
+        self.comboBox = QtWidgets.QComboBox(Form)
+        self.comboBox.setObjectName("comboBox")
+        self.verticalLayout.addWidget(self.comboBox)
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_2.setObjectName("verticalLayout_2")
+        self.color_button = QtWidgets.QPushButton(Form)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.color_button.sizePolicy().hasHeightForWidth())
+        self.color_button.setSizePolicy(sizePolicy)
+        self.color_button.setStyleSheet("QPushButton {\n"
+"  background: rgb(255, 0, 0);\n"
+"}\n"
+"\n"
+"QPushButton:pressed{\n"
+"  background: rgb(38, 132, 255)\n"
+"}")
+        self.color_button.setObjectName("color_button")
+        self.verticalLayout_2.addWidget(self.color_button)
+        self.verticalLayout.addLayout(self.verticalLayout_2)
+        self.horizontalLayout_2.addLayout(self.verticalLayout)
+        self.gridLayout.addLayout(self.horizontalLayout_2, 0, 0, 1, 1)
+        self.horizontalLayout = QtWidgets.QHBoxLayout()
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.apply_button = QtWidgets.QPushButton(Form)
+        self.apply_button.setStyleSheet("QPushButton {\n"
+"  background: rgb(255, 0, 0);\n"
+"}\n"
+"\n"
+"QPushButton:pressed{\n"
+"  background: rgb(255, 255, 0);\n"
+"}")
+        self.apply_button.setObjectName("apply_button")
+        self.horizontalLayout.addWidget(self.apply_button)
+        self.exit_button = QtWidgets.QPushButton(Form)
+        self.exit_button.setStyleSheet("QPushButton {\n"
+"  background: rgb(255, 0, 0);\n"
+"}\n"
+"\n"
+"QPushButton:pressed{\n"
+"  background: rgb(255, 255, 0);\n"
+"}")
+        self.exit_button.setObjectName("exit_button")
+        self.horizontalLayout.addWidget(self.exit_button)
+        self.gridLayout.addLayout(self.horizontalLayout, 2, 0, 1, 1)
+        self.lineEdit = QtWidgets.QLineEdit(Form)
+        self.lineEdit.setText("")
+        self.lineEdit.setObjectName("lineEdit")
+        self.gridLayout.addWidget(self.lineEdit, 1, 0, 1, 1)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -76,6 +111,8 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.name_furniture.setText(_translate("Form", "Название"))
-        self.add_button.setText(_translate("Form", "add"))
-        self.change_button.setText(_translate("Form", "change"))
+        self.rendo_button.setText(_translate("Form", "Вперёд"))
+        self.undo_button.setText(_translate("Form", "Назад"))
+        self.color_button.setText(_translate("Form", "Цвет"))
+        self.apply_button.setText(_translate("Form", "Применить"))
+        self.exit_button.setText(_translate("Form", "Выйти"))

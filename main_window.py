@@ -160,7 +160,7 @@ class MainWindowClass(QMainWindow):
     def init_scroll(self):
         self.layuot_v = QVBoxLayout()
         name = 'Название'
-        n = 100
+        n = 10
         for i in range(n):
             self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
             self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
@@ -217,8 +217,5 @@ class MainWindowClass(QMainWindow):
         self.scrollAreaWidgetContents.setLayout(self.layuot_v)
 
     def new_furniture(self):
-
-        app = QApplication(sys.argv)
-        ui = NewFurnitureClass()
-        ui.show()
-        sys.exit(app.exec_())
+        self.ui = NewFurnitureClass()
+        self.ui.show()
