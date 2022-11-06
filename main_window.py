@@ -217,6 +217,7 @@ class MainWindowClass(QMainWindow):
         self.scrollAreaWidgetContents.setLayout(self.layuot_v)
 
     def new_furniture(self):
+
         app = QApplication(sys.argv)
         ui = NewFurnitureClass()
         ui.show()
