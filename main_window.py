@@ -1,6 +1,7 @@
 import os
 import sqlite3
 import sys
+from sys import argv, executable
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PIL import Image, ImageDraw
@@ -9,6 +10,8 @@ from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QMainWindow, QLabel, QWidget, QVBoxLayout, QApplication, QInputDialog
 from new_furniture_or_apart_window import NewFurnitureApartClass
+
+
 
 
 class MainWindowClass(QMainWindow):
@@ -192,7 +195,9 @@ class MainWindowClass(QMainWindow):
 
 
     def refresh(self):
-        os.execl(sys.executable, sys.executable, *sys.argv)
+        self.close()
+        os.system("python main.py")
+
 
     def init_scroll(self):
         self.layuot_v = QVBoxLayout()
@@ -261,8 +266,6 @@ class MainWindowClass(QMainWindow):
         self.cur = self.con.cursor()
         furn = list(self.cur.execute(f"""SELECT * FROM furniture
         WHERE title = '{self.sender().text()}'""").fetchall()[0])
-        size = list(map(int, furn[2][1:-1].split(', ')))
-        self.im_furn = Image.open(furn[3])
 
 
 
@@ -282,20 +285,17 @@ class MainWindowClass(QMainWindow):
     def mouseMoveEvent(self, event):
         print(self.target)
         if self.moving:
-            self.furn_list_wiew[self.target][0].move(event.x(), event.y())
-            print(self.furn_list_wiew[self.target])
-            self.furn_list_wiew[self.target][1] = range(event.x(), event.x() + self.furn_list_wiew[self.target][3])
-            self.furn_list_wiew[self.target][2] = range(event.y(), event.y() + self.furn_list_wiew[self.target][4])
-
-        print(f"Координаты: {event.x()}, {event.y()}")
+            if event.x() + self.furn_list_wiew[self.target][3] < 710 and event.y() + self.furn_list_wiew[self.target][4] < 810 and event.x() > 10 and event.y() > 70:
+                self.furn_list_wiew[self.target][0].move(event.x(), event.y())
+                self.furn_list_wiew[self.target][1] = range(event.x(), event.x() + self.furn_list_wiew[self.target][3])
+                self.furn_list_wiew[self.target][2] = range(event.y(), event.y() + self.furn_list_wiew[self.target][4])
 
 
     def mousePressEvent(self, a0: QtGui.QMouseEvent):
         for i in range(len(self.furn_list_wiew)):
             if a0.x() in self.furn_list_wiew[i][1] and a0.y() in self.furn_list_wiew[i][2]:
-                self.target = i
-                self.moving = True
-        print(self.target)
+                    self.target = i
+                    self.moving = True
 
     def mouseReleaseEvent(self, a0: QtGui.QMouseEvent):
         self.moving = False
@@ -304,7 +304,6 @@ class MainWindowClass(QMainWindow):
         if event.key() == Qt.Key_Delete:
             if self.target != '':
                 self.furn_list_wiew[self.target][0].setVisible(False)
-                print(1)
                 self.furn_list_wiew.pop(self.target)
 
 
