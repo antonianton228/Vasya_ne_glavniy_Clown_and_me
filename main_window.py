@@ -240,8 +240,14 @@ class MainWindowClass(QMainWindow):
         self.furn = NewFurnitureApartClass('furniture')
         self.furn.show()
 
-    def add_furn(self, x=0, y=0, angle=0):
-        pass
+    def add_furn(self, x=1, y=1, angle=0):
+        self.con = sqlite3.connect("Furniture_redactor_database.sqlite")
+        self.cur = self.con.cursor()
+        furn = list(self.cur.execute(f"""SELECT * FROM furniture
+        WHERE title = '{self.sender().text()}'""").fetchall()[0])
+        print(furn)
+        size = list(map(int, furn[2][1:-1].split(', ')))
+        self.im_furn = Image.open(furn[3])
 
     def change_size(self):
         self.con = sqlite3.connect("Furniture_redactor_database.sqlite")
