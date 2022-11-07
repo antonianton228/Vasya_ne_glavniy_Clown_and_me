@@ -24,6 +24,8 @@ class MainWindowClass(QMainWindow):
         MainWindow.setMaximumSize(QtCore.QSize(1009, 854))
         MainWindow.setStyleSheet("background: rgb(118, 118, 118)")
         self.setMouseTracking(True)
+
+        self.moving = False
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
@@ -279,7 +281,7 @@ class MainWindowClass(QMainWindow):
 
     def mouseMoveEvent(self, event):
         print(self.target)
-        if self.target != '':
+        if self.moving:
             self.furn_list_wiew[self.target][0].move(event.x(), event.y())
             print(self.furn_list_wiew[self.target])
             self.furn_list_wiew[self.target][1] = range(event.x(), event.x() + self.furn_list_wiew[self.target][3])
@@ -292,10 +294,19 @@ class MainWindowClass(QMainWindow):
         for i in range(len(self.furn_list_wiew)):
             if a0.x() in self.furn_list_wiew[i][1] and a0.y() in self.furn_list_wiew[i][2]:
                 self.target = i
+                self.moving = True
         print(self.target)
 
     def mouseReleaseEvent(self, a0: QtGui.QMouseEvent):
-        self.target = ''
+        self.moving = False
+
+    def keyPressEvent(self, event: QtGui.QKeyEvent):
+        if event.key() == Qt.Key_Delete:
+            if self.target != '':
+                self.furn_list_wiew[self.target][0].setVisible(False)
+                print(1)
+                self.furn_list_wiew.pop(self.target)
+
 
     def change_size(self):
         self.con = sqlite3.connect("Furniture_redactor_database.sqlite")
