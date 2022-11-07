@@ -1,3 +1,4 @@
+import os
 import sqlite3
 import sys
 
@@ -55,16 +56,16 @@ class MainWindowClass(QMainWindow):
         self.load_button.setObjectName("load_button")
         self.save_load_horisontal_box.addWidget(self.load_button)
         self.verticalLayout.addLayout(self.save_load_horisontal_box)
-        self.change_make = QtWidgets.QPushButton(self.centralwidget)
-        self.change_make.setStyleSheet("QPushButton {\n"
+        self.open_button = QtWidgets.QPushButton(self.centralwidget)
+        self.open_button.setStyleSheet("QPushButton {\n"
                                        "  background: rgb(255, 0, 0);\n"
                                        "}\n"
                                        "\n"
                                        "QPushButton:pressed{\n"
                                        "  background: rgb(38, 132, 255)\n"
                                        "}")
-        self.change_make.setObjectName("change_make")
-        self.verticalLayout.addWidget(self.change_make)
+        self.open_button.setObjectName("open_button")
+        self.verticalLayout.addWidget(self.open_button)
         self.main_plan = QtWidgets.QLabel(self.centralwidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -96,9 +97,6 @@ class MainWindowClass(QMainWindow):
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
 
         self.init_scroll()
-
-        self.scroll_of_furniture.setWidget(self.scrollAreaWidgetContents)
-
         self.verticalLayout_4.addWidget(self.scroll_of_furniture)
         self.add_furniture = QtWidgets.QPushButton(self.centralwidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
@@ -116,6 +114,20 @@ class MainWindowClass(QMainWindow):
                                          "}")
         self.add_furniture.setObjectName("add_furniture")
         self.verticalLayout_4.addWidget(self.add_furniture)
+
+        self.update_list_furn = QtWidgets.QPushButton(self.centralwidget)
+        self.update_list_furn.setSizePolicy(sizePolicy)
+        self.update_list_furn.setMinimumSize(QtCore.QSize(280, 0))
+        self.update_list_furn.setStyleSheet("QPushButton {\n"
+                                         "  background: rgb(255, 0, 0);\n"
+                                         "}\n"
+                                         "\n"
+                                         "QPushButton:pressed{\n"
+                                         "  background: rgb(255, 255, 0);\n"
+                                         "}")
+        self.update_list_furn.setObjectName("update_list_furn")
+        self.verticalLayout_4.addWidget(self.update_list_furn)
+
         self.horizontalLayout.addLayout(self.verticalLayout_4)
         self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
@@ -133,18 +145,43 @@ class MainWindowClass(QMainWindow):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.save_button.setText(_translate("MainWindow", "Сохранить  дизайн"))
-        self.load_button.setText(_translate("MainWindow", "Загрузить дизайн"))
-        self.change_make.setText(_translate("MainWindow", "Пересоздать макет квартиры"))
-        self.add_button.setText(_translate("MainWindow", "Добавить"))
-        self.change_button.setText(_translate("MainWindow", "Изм размер"))
+        self.open_button.setText(_translate("MainWindow", "Открыть макет квартиры"))
+        self.load_button.setText(_translate("MainWindow", "Создать макет квартиры"))
+        self.save_button.setText(_translate("MainWindow", "Сохранить дизайн"))
         self.add_furniture.setText(_translate("MainWindow", "Добавить свою мебель"))
+        self.update_list_furn.setText(_translate("MainWindow", "Обновить список мебели"))
         self.add_furniture.clicked.connect(self.new_furniture)
         self.load_button.clicked.connect(self.new_make)
+        self.update_list_furn.clicked.connect(self.refresh)
+        self.open_button.clicked.connect(self.open_apart)
 
     def new_make(self):
         self.apart = NewFurnitureApartClass('apartament')
         self.apart.show()
+
+    def open_apart(self):
+        self.con = sqlite3.connect("Furniture_redactor_database.sqlite")
+        self.cur = self.con.cursor()
+        aparts = tuple(map(lambda x: list(x)[0], self.cur.execute("""SELECT title FROM apartaments""").fetchall()))
+        name, ok_pressed = QInputDialog.getItem(
+            self, "Выберите квартиру", "Какая вам нужна?",
+            aparts, 1, False)
+        if ok_pressed:
+            apart = list(self.cur.execute(f"""SELECT * FROM apartaments
+            WHERE title = '{name}'""").fetchall()[0])
+            self.list_of_furn = apart[2].split('$')
+            print(self.list_of_furn)
+            self.im_apart = Image.open(apart[3])
+            self.im_apart.resize((700, 750))
+            self.pix_apart = QPixmap.fromImage(ImageQt(self.im_apart.convert("RGBA")))
+            self.main_plan.setPixmap(self.pix_apart)
+            for furn in self.list_of_furn:
+                x, y, angle = furn.split(', ')
+                self.add_furn(x=x, y=y, angle=angle)
+        self.con.close()
+
+    def refresh(self):
+        os.execl(sys.executable, sys.executable, *sys.argv)
 
     def init_scroll(self):
         self.layuot_v = QVBoxLayout()
@@ -194,15 +231,16 @@ class MainWindowClass(QMainWindow):
             self.horizontalLayout_2.addLayout(self.verticalLayout_5)
             self.layuot_v.addLayout(self.horizontalLayout_2, i)
             self.change_button.clicked.connect(self.change_size)
-            self.add_button.clicked.connect(self.add_furniture)
+            self.add_button.clicked.connect(self.add_furn)
         self.scrollAreaWidgetContents.setLayout(self.layuot_v)
+        self.scroll_of_furniture.setWidget(self.scrollAreaWidgetContents)
         self.con.close()
 
     def new_furniture(self):
         self.furn = NewFurnitureApartClass('furniture')
         self.furn.show()
 
-    def add_furniture(self):
+    def add_furn(self, x=0, y=0, angle=0):
         pass
 
     def change_size(self):

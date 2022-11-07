@@ -174,13 +174,13 @@ class NewFurnitureApartClass(QWidget):
                 if abs(self.draw_flag.x() - event.pos().x()) > abs(self.draw_flag.y() - event.pos().y()):
                     pencil.line((self.draw_flag.x() - 10, self.draw_flag.y() - 10, event.pos().x() - 10,
                                  self.draw_flag.y() - 10),
-                                fill=self.brushColor)
+                                fill=self.brushColor, width=5)
                     self.draw_flag = QPoint(event.pos().x(), self.draw_flag.y())
                 else:
                     pencil.line(
                         (self.draw_flag.x() - 10, self.draw_flag.y() - 10, self.draw_flag.x() - 10,
                          event.pos().y() - 10),
-                        fill=self.brushColor)
+                        fill=self.brushColor, width=5)
                     self.draw_flag = QPoint(self.draw_flag.x(), event.pos().y())
                 self.pix = QPixmap.fromImage(ImageQt(self.im.convert("RGBA")))
                 self.furniture_plan.setPixmap(self.pix)
@@ -202,7 +202,7 @@ class NewFurnitureApartClass(QWidget):
                     f'''INSERT INTO furniture(title,size,image) VALUES("{self.lineEdit.text()}",
                      "(100, 100)","images_furn/{self.lineEdit.text()}.png")''')
                 self.con.commit()
-                self.close()
+                self.con.close()
         else:
             if self.lineEdit.text() != '' and (self.lineEdit.text(),) not in self.cur.execute(
                     '''SELECT title FROM apartaments''').fetchall() and self.im != Image.new('RGB', (
@@ -212,7 +212,8 @@ class NewFurnitureApartClass(QWidget):
                     f'''INSERT INTO apartaments(title,list_of_furniture,apart_image) VALUES("{self.lineEdit.text()}",
                     "","images_apart/{self.lineEdit.text()}.png")''')
                 self.con.commit()
-                self.close()
+                self.con.close()
+        self.close()
 
     def crop(self, im):
         pixels = im.load()

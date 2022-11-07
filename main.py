@@ -7,6 +7,10 @@ from main_window import MainWindowClass
 
 
 if __name__ == "__main__":
+    # app = QApplication(sys.argv)
+    # ui = MainWindowClass()
+    # ui.show()
+    # sys.exit(app.exec_())
     try:
         app = QApplication(sys.argv)
         ui = MainWindowClass()
