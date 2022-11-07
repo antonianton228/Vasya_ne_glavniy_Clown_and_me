@@ -81,23 +81,7 @@ QPushButton:pressed{
 }</string>
             </property>
             <property name="text">
-             <string>Изменить макет квартиры</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="auto_razvodchic">
-            <property name="styleSheet">
-             <string notr="true">QPushButton {
-  background: rgb(255, 0, 0);
-}
-
-QPushButton:pressed{
-  background: rgb(38, 132, 255)
-}</string>
-            </property>
-            <property name="text">
-             <string>Автоматически расставить </string>
+             <string>Пересоздать макет</string>
             </property>
            </widget>
           </item>

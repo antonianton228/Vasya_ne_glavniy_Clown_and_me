@@ -15,9 +15,10 @@ from PIL.ImageQt import ImageQt
 import sqlite3
 
 
-class NewFurnitureClass(QWidget):
-    def __init__(self):
+class NewFurnitureApartClass(QWidget):
+    def __init__(self, obj):
         super().__init__()
+        self.obj = obj
         self.setupUi()
 
     def setupUi(self):
@@ -131,7 +132,6 @@ class NewFurnitureClass(QWidget):
         self.color_button.setText(_translate("Form", "Цвет"))
         self.apply_button.setText(_translate("Form", "Применить"))
         self.exit_button.setText(_translate("Form", "Выйти"))
-        print(self.furniture_plan.size())
         self.im = Image.new('RGB', (self.furniture_plan.size().width(), self.furniture_plan.size().height()), 'black')
         self.old_im = Image.new('RGB', (self.furniture_plan.size().width(), self.furniture_plan.size().height()),
                                 'black')
@@ -161,23 +161,10 @@ class NewFurnitureClass(QWidget):
             self.drawing = True
             self.lastPoint = event.pos()
 
-    # def mouseMoveEvent(self, event):
-    #     if (event.buttons() & Qt.LeftButton) & self.drawing:
-    #         pencil = ImageDraw.Draw(self.im)
-    #         pencil.line((self.lastPoint.x() - 10, self.lastPoint.y() - 10, event.pos().x() - 10, event.pos().y() - 10),
-    #                     fill=self.brushColor)
-    #         # painter.drawLine(self.lastPoint, event.pos())
-    #
-    #         self.pix = QPixmap.fromImage(ImageQt(self.im.convert("RGBA")))
-    #         self.furniture_plan.setPixmap(self.pix)
-    #
-    #         self.lastPoint = event.pos()
-    #
-    #         self.update()
-
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Escape:
             self.draw_flag = False
+
     # code
 
     def mouseReleaseEvent(self, event):
@@ -185,18 +172,18 @@ class NewFurnitureClass(QWidget):
             if self.draw_flag:
                 pencil = ImageDraw.Draw(self.im)
                 if abs(self.draw_flag.x() - event.pos().x()) > abs(self.draw_flag.y() - event.pos().y()):
-                    pencil.line((self.draw_flag.x() - 10, self.draw_flag.y() - 10, event.pos().x() - 10, self.draw_flag.y() - 10),
-                        fill=self.brushColor)
+                    pencil.line((self.draw_flag.x() - 10, self.draw_flag.y() - 10, event.pos().x() - 10,
+                                 self.draw_flag.y() - 10),
+                                fill=self.brushColor)
                     self.draw_flag = QPoint(event.pos().x(), self.draw_flag.y())
-
                 else:
                     pencil.line(
-                        (self.draw_flag.x() - 10, self.draw_flag.y() - 10, self.draw_flag.x() - 10, event.pos().y() - 10),
+                        (self.draw_flag.x() - 10, self.draw_flag.y() - 10, self.draw_flag.x() - 10,
+                         event.pos().y() - 10),
                         fill=self.brushColor)
                     self.draw_flag = QPoint(self.draw_flag.x(), event.pos().y())
                 self.pix = QPixmap.fromImage(ImageQt(self.im.convert("RGBA")))
                 self.furniture_plan.setPixmap(self.pix)
-
                 self.update()
             else:
                 self.draw_flag = event.pos()
@@ -206,15 +193,26 @@ class NewFurnitureClass(QWidget):
     def apply(self):
         self.con = sqlite3.connect("Furniture_redactor_database.sqlite")
         self.cur = self.con.cursor()
-        print(self.cur.execute('''SELECT title FROM furniture''').fetchall())
-        if self.lineEdit.text() != '' and (self.lineEdit.text(),) not in self.cur.execute(
-                '''SELECT title FROM furniture''').fetchall() and self.im != Image.new('RGB', (
-        self.furniture_plan.size().width(), self.furniture_plan.size().height()), 'black'):
-            self.crop(self.im).save(f'images/{self.lineEdit.text()}.png')
-            self.cur.execute(
-                f'''INSERT INTO furniture(title,size,image) VALUES("{self.lineEdit.text()}", "(100, 100)","images/{self.lineEdit.text()}.png")''')
-            self.con.commit()
-            self.close()
+        if self.obj == 'furniture':
+            if self.lineEdit.text() != '' and (self.lineEdit.text(),) not in self.cur.execute(
+                    '''SELECT title FROM furniture''').fetchall() and self.im != Image.new('RGB', (
+                    self.furniture_plan.size().width(), self.furniture_plan.size().height()), 'black'):
+                self.crop(self.im).save(f'images_furn/{self.lineEdit.text()}.png')
+                self.cur.execute(
+                    f'''INSERT INTO furniture(title,size,image) VALUES("{self.lineEdit.text()}",
+                     "(100, 100)","images_furn/{self.lineEdit.text()}.png")''')
+                self.con.commit()
+                self.close()
+        else:
+            if self.lineEdit.text() != '' and (self.lineEdit.text(),) not in self.cur.execute(
+                    '''SELECT title FROM apartaments''').fetchall() and self.im != Image.new('RGB', (
+                    self.furniture_plan.size().width(), self.furniture_plan.size().height()), 'black'):
+                self.crop(self.im).save(f'images_apart/{self.lineEdit.text()}.png')
+                self.cur.execute(
+                    f'''INSERT INTO apartaments(title,list_of_furniture,apart_image) VALUES("{self.lineEdit.text()}",
+                    "","images_apart/{self.lineEdit.text()}.png")''')
+                self.con.commit()
+                self.close()
 
     def crop(self, im):
         pixels = im.load()
