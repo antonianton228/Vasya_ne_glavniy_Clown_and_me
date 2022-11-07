@@ -17,11 +17,13 @@ class MainWindowClass(QMainWindow):
         self.setupUi()
 
     def setupUi(self):
+
         MainWindow = self
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1009, 854)
         MainWindow.setMaximumSize(QtCore.QSize(1009, 854))
         MainWindow.setStyleSheet("background: rgb(118, 118, 118)")
+        self.setMouseTracking(True)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
@@ -114,9 +116,9 @@ class MainWindowClass(QMainWindow):
                                          "}")
         self.add_furniture.setObjectName("add_furniture")
         self.verticalLayout_4.addWidget(self.add_furniture)
-
         self.update_list_furn = QtWidgets.QPushButton(self.centralwidget)
         self.update_list_furn.setSizePolicy(sizePolicy)
+        self.target = ''
         self.update_list_furn.setMinimumSize(QtCore.QSize(280, 0))
         self.update_list_furn.setStyleSheet("QPushButton {\n"
                                          "  background: rgb(255, 0, 0);\n"
@@ -138,6 +140,7 @@ class MainWindowClass(QMainWindow):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        self.furn_list_wiew = []
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -155,6 +158,8 @@ class MainWindowClass(QMainWindow):
         self.update_list_furn.clicked.connect(self.refresh)
         self.open_button.clicked.connect(self.open_apart)
 
+
+
     def new_make(self):
         self.apart = NewFurnitureApartClass('apartament')
         self.apart.show()
@@ -170,15 +175,19 @@ class MainWindowClass(QMainWindow):
             apart = list(self.cur.execute(f"""SELECT * FROM apartaments
             WHERE title = '{name}'""").fetchall()[0])
             self.list_of_furn = apart[2].split('$')
-            print(self.list_of_furn)
             self.im_apart = Image.open(apart[3])
-            self.im_apart.resize((700, 750))
+
             self.pix_apart = QPixmap.fromImage(ImageQt(self.im_apart.convert("RGBA")))
+
+            self.main_plan.setScaledContents(True)
+
             self.main_plan.setPixmap(self.pix_apart)
             for furn in self.list_of_furn:
-                x, y, angle = furn.split(', ')
-                self.add_furn(x=x, y=y, angle=angle)
+                if furn:
+                    x, y, angle = furn.split(', ')
+                    self.add_furn(x=x, y=y, angle=angle)
         self.con.close()
+
 
     def refresh(self):
         os.execl(sys.executable, sys.executable, *sys.argv)
@@ -202,6 +211,7 @@ class MainWindowClass(QMainWindow):
             self.img_furniture.setStyleSheet("background: rgb(0, 0, 0)")
             self.img_furniture.setObjectName("img_furniture")
             self.im = Image.open(self.res[i])
+
             self.im = self.im.resize((75, 75))
             self.im.save(self.res[i])
             self.img_furniture.setPixmap(QPixmap(self.res[i]))
@@ -209,6 +219,9 @@ class MainWindowClass(QMainWindow):
             self.verticalLayout_5 = QtWidgets.QVBoxLayout()
             self.verticalLayout_5.setObjectName("verticalLayout_5")
             self.add_button = QtWidgets.QPushButton(name)
+
+
+
             self.add_button.setStyleSheet("QPushButton {\n"
                                           "  background: rgb(255, 0, 0);\n"
                                           "}\n"
@@ -236,6 +249,7 @@ class MainWindowClass(QMainWindow):
         self.scroll_of_furniture.setWidget(self.scrollAreaWidgetContents)
         self.con.close()
 
+
     def new_furniture(self):
         self.furn = NewFurnitureApartClass('furniture')
         self.furn.show()
@@ -245,9 +259,43 @@ class MainWindowClass(QMainWindow):
         self.cur = self.con.cursor()
         furn = list(self.cur.execute(f"""SELECT * FROM furniture
         WHERE title = '{self.sender().text()}'""").fetchall()[0])
-        print(furn)
         size = list(map(int, furn[2][1:-1].split(', ')))
         self.im_furn = Image.open(furn[3])
+
+
+
+        im1 = QPixmap.fromImage(ImageQt(furn[3]))
+        self.new_fut = QtWidgets.QLabel(self.centralwidget)
+        self.new_fut.setGeometry(QtCore.QRect(100, 100, int(furn[2].split(', ')[0][1:]), int(furn[2].split(', ')[1][:-1])))
+        self.new_fut.setObjectName("label")
+        self.new_fut.setScaledContents(True)
+        self.new_fut.setPixmap(im1)
+        self.new_fut.setAcceptDrops(True)
+        self.new_fut.show()
+
+
+        self.furn_list_wiew.append([self.new_fut, range(100, 100 + int(furn[2].split(', ')[0][1:])), range(100, 100 + int(furn[2].split(', ')[1][:-1])), int(furn[2].split(', ')[0][1:]), int(furn[2].split(', ')[1][:-1])])
+        self.setCentralWidget(self.centralwidget)
+
+    def mouseMoveEvent(self, event):
+        print(self.target)
+        if self.target != '':
+            self.furn_list_wiew[self.target][0].move(event.x(), event.y())
+            print(self.furn_list_wiew[self.target])
+            self.furn_list_wiew[self.target][1] = range(event.x(), event.x() + self.furn_list_wiew[self.target][3])
+            self.furn_list_wiew[self.target][2] = range(event.y(), event.y() + self.furn_list_wiew[self.target][4])
+
+        print(f"Координаты: {event.x()}, {event.y()}")
+
+
+    def mousePressEvent(self, a0: QtGui.QMouseEvent):
+        for i in range(len(self.furn_list_wiew)):
+            if a0.x() in self.furn_list_wiew[i][1] and a0.y() in self.furn_list_wiew[i][2]:
+                self.target = i
+        print(self.target)
+
+    def mouseReleaseEvent(self, a0: QtGui.QMouseEvent):
+        self.target = ''
 
     def change_size(self):
         self.con = sqlite3.connect("Furniture_redactor_database.sqlite")
@@ -261,3 +309,4 @@ class MainWindowClass(QMainWindow):
                 WHERE title = '{self.sender().text()[:-7]}'""")
         self.con.commit()
         self.con.close()
+

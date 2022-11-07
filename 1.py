@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'new_furniture_window.ui'
+# Form implementation generated from reading ui file '1.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.7
 #
@@ -11,108 +11,28 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_Form(object):
-    def setupUi(self, Form):
-        Form.setObjectName("Form")
-        Form.resize(739, 626)
-        Form.setStyleSheet("background: rgb(118, 118, 118)")
-        self.gridLayout = QtWidgets.QGridLayout(Form)
-        self.gridLayout.setObjectName("gridLayout")
-        self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.furniture_plan = QtWidgets.QLabel(Form)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Expanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.furniture_plan.sizePolicy().hasHeightForWidth())
-        self.furniture_plan.setSizePolicy(sizePolicy)
-        self.furniture_plan.setMinimumSize(QtCore.QSize(600, 0))
-        self.furniture_plan.setStyleSheet("background: rgb(0, 0, 0)")
-        self.furniture_plan.setText("")
-        self.furniture_plan.setObjectName("furniture_plan")
-        self.horizontalLayout_2.addWidget(self.furniture_plan)
-        self.verticalLayout = QtWidgets.QVBoxLayout()
-        self.verticalLayout.setSizeConstraint(QtWidgets.QLayout.SetMinimumSize)
-        self.verticalLayout.setObjectName("verticalLayout")
-        self.rendo_button = QtWidgets.QPushButton(Form)
-        self.rendo_button.setStyleSheet("QPushButton {\n"
-"  background: rgb(255, 0, 0);\n"
-"}\n"
-"\n"
-"QPushButton:pressed{\n"
-"  background: rgb(38, 132, 255)\n"
-"}")
-        self.rendo_button.setObjectName("rendo_button")
-        self.verticalLayout.addWidget(self.rendo_button)
-        self.undo_button = QtWidgets.QPushButton(Form)
-        self.undo_button.setStyleSheet("QPushButton {\n"
-"  background: rgb(255, 0, 0);\n"
-"}\n"
-"\n"
-"QPushButton:pressed{\n"
-"  background: rgb(38, 132, 255)\n"
-"}")
-        self.undo_button.setObjectName("undo_button")
-        self.verticalLayout.addWidget(self.undo_button)
-        self.comboBox = QtWidgets.QComboBox(Form)
-        self.comboBox.setObjectName("comboBox")
-        self.verticalLayout.addWidget(self.comboBox)
-        self.verticalLayout_2 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.color_button = QtWidgets.QPushButton(Form)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.color_button.sizePolicy().hasHeightForWidth())
-        self.color_button.setSizePolicy(sizePolicy)
-        self.color_button.setStyleSheet("QPushButton {\n"
-"  background: rgb(255, 0, 0);\n"
-"}\n"
-"\n"
-"QPushButton:pressed{\n"
-"  background: rgb(38, 132, 255)\n"
-"}")
-        self.color_button.setObjectName("color_button")
-        self.verticalLayout_2.addWidget(self.color_button)
-        self.verticalLayout.addLayout(self.verticalLayout_2)
-        self.horizontalLayout_2.addLayout(self.verticalLayout)
-        self.gridLayout.addLayout(self.horizontalLayout_2, 0, 0, 1, 1)
-        self.horizontalLayout = QtWidgets.QHBoxLayout()
-        self.horizontalLayout.setObjectName("horizontalLayout")
-        self.apply_button = QtWidgets.QPushButton(Form)
-        self.apply_button.setStyleSheet("QPushButton {\n"
-"  background: rgb(255, 0, 0);\n"
-"}\n"
-"\n"
-"QPushButton:pressed{\n"
-"  background: rgb(255, 255, 0);\n"
-"}")
-        self.apply_button.setObjectName("apply_button")
-        self.horizontalLayout.addWidget(self.apply_button)
-        self.exit_button = QtWidgets.QPushButton(Form)
-        self.exit_button.setStyleSheet("QPushButton {\n"
-"  background: rgb(255, 0, 0);\n"
-"}\n"
-"\n"
-"QPushButton:pressed{\n"
-"  background: rgb(255, 255, 0);\n"
-"}")
-        self.exit_button.setObjectName("exit_button")
-        self.horizontalLayout.addWidget(self.exit_button)
-        self.gridLayout.addLayout(self.horizontalLayout, 2, 0, 1, 1)
-        self.lineEdit = QtWidgets.QLineEdit(Form)
-        self.lineEdit.setText("")
-        self.lineEdit.setObjectName("lineEdit")
-        self.gridLayout.addWidget(self.lineEdit, 1, 0, 1, 1)
+class Ui_MainWindow(object):
+    def setupUi(self, MainWindow):
+        MainWindow.setObjectName("MainWindow")
+        MainWindow.resize(800, 600)
+        self.centralwidget = QtWidgets.QWidget(MainWindow)
+        self.centralwidget.setObjectName("centralwidget")
+        self.label = QtWidgets.QLabel(self.centralwidget)
+        self.label.setGeometry(QtCore.QRect(300, 210, 251, 131))
+        self.label.setObjectName("label")
+        MainWindow.setCentralWidget(self.centralwidget)
+        self.menubar = QtWidgets.QMenuBar(MainWindow)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 21))
+        self.menubar.setObjectName("menubar")
+        MainWindow.setMenuBar(self.menubar)
+        self.statusbar = QtWidgets.QStatusBar(MainWindow)
+        self.statusbar.setObjectName("statusbar")
+        MainWindow.setStatusBar(self.statusbar)
 
-        self.retranslateUi(Form)
-        QtCore.QMetaObject.connectSlotsByName(Form)
+        self.retranslateUi(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-    def retranslateUi(self, Form):
+    def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
-        self.rendo_button.setText(_translate("Form", "Вперёд"))
-        self.undo_button.setText(_translate("Form", "Назад"))
-        self.color_button.setText(_translate("Form", "Цвет"))
-        self.apply_button.setText(_translate("Form", "Применить"))
-        self.exit_button.setText(_translate("Form", "Выйти"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        self.label.setText(_translate("MainWindow", "TextLabel"))
