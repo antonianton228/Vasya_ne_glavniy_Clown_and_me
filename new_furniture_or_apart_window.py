@@ -25,7 +25,7 @@ class NewFurnitureApartClass(QWidget):
         Form = self
         Form.setObjectName("Form")
         Form.resize(739, 626)
-        Form.setStyleSheet("background: rgb(118, 118, 118)")
+        Form.setStyleSheet("background: rgb(195,146,255)")
 
         self.drawing = False
         self.draw_flag = False
@@ -44,7 +44,7 @@ class NewFurnitureApartClass(QWidget):
         sizePolicy.setHeightForWidth(self.furniture_plan.sizePolicy().hasHeightForWidth())
         self.furniture_plan.setSizePolicy(sizePolicy)
         self.furniture_plan.setMinimumSize(QtCore.QSize(600, 600))
-        self.furniture_plan.setStyleSheet("background: rgb(0, 0, 0)")
+        self.furniture_plan.setStyleSheet("background: rgb(254,220,255)")
         self.furniture_plan.setObjectName("furniture_plan")
         self.furniture_plan.setMouseTracking(True)
         self.horizontalLayout_2.addWidget(self.furniture_plan)
@@ -53,7 +53,7 @@ class NewFurnitureApartClass(QWidget):
         self.verticalLayout.setObjectName("verticalLayout")
         self.rendo_button = QtWidgets.QPushButton(Form)
         self.rendo_button.setStyleSheet("QPushButton {\n"
-                                        "  background: rgb(255, 0, 0);\n"
+                                        "  background: rgb(224,160,195);\n"
                                         "}\n"
                                         "\n"
                                         "QPushButton:pressed{\n"
@@ -63,7 +63,7 @@ class NewFurnitureApartClass(QWidget):
         self.verticalLayout.addWidget(self.rendo_button)
         self.undo_button = QtWidgets.QPushButton(Form)
         self.undo_button.setStyleSheet("QPushButton {\n"
-                                       "  background: rgb(255, 0, 0);\n"
+                                       "  background: rgb(224,160,195);\n"
                                        "}\n"
                                        "\n"
                                        "QPushButton:pressed{\n"
@@ -81,7 +81,7 @@ class NewFurnitureApartClass(QWidget):
         sizePolicy.setHeightForWidth(self.color_button.sizePolicy().hasHeightForWidth())
         self.color_button.setSizePolicy(sizePolicy)
         self.color_button.setStyleSheet("QPushButton {\n"
-                                        "  background: rgb(255, 0, 0);\n"
+                                        "  background: rgb(224,160,195);\n"
                                         "}\n"
                                         "\n"
                                         "QPushButton:pressed{\n"
@@ -96,7 +96,7 @@ class NewFurnitureApartClass(QWidget):
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.apply_button = QtWidgets.QPushButton(Form)
         self.apply_button.setStyleSheet("QPushButton {\n"
-                                        "  background: rgb(255, 0, 0);\n"
+                                        "  background: rgb(224,160,195);\n"
                                         "}\n"
                                         "\n"
                                         "QPushButton:pressed{\n"
@@ -106,7 +106,7 @@ class NewFurnitureApartClass(QWidget):
         self.horizontalLayout.addWidget(self.apply_button)
         self.exit_button = QtWidgets.QPushButton(Form)
         self.exit_button.setStyleSheet("QPushButton {\n"
-                                       "  background: rgb(255, 0, 0);\n"
+                                       "  background: rgb(224,160,195);\n"
                                        "}\n"
                                        "\n"
                                        "QPushButton:pressed{\n"
@@ -115,6 +115,13 @@ class NewFurnitureApartClass(QWidget):
         self.exit_button.setObjectName("exit_button")
         self.horizontalLayout.addWidget(self.exit_button)
         self.gridLayout.addLayout(self.horizontalLayout, 2, 0, 1, 1)
+
+        print(self.obj)
+        if self.obj == 'apartament':
+            self.im = Image.open('plate.png')
+            self.pix = QPixmap.fromImage(ImageQt(self.im.convert("RGBA")))
+            self.furniture_plan.setScaledContents(True)
+            self.furniture_plan.setPixmap(self.pix)
 
         self.lineEdit = QtWidgets.QLineEdit(Form)
         self.lineEdit.setText("")
@@ -132,9 +139,13 @@ class NewFurnitureApartClass(QWidget):
         self.color_button.setText(_translate("Form", "Цвет"))
         self.apply_button.setText(_translate("Form", "Применить"))
         self.exit_button.setText(_translate("Form", "Выйти"))
-        self.im = Image.new('RGB', (self.furniture_plan.size().width(), self.furniture_plan.size().height()), 'black')
-        self.old_im = Image.new('RGB', (self.furniture_plan.size().width(), self.furniture_plan.size().height()),
-                                'black')
+        if self.obj == 'apartament':
+            self.im = Image.open('plate.png')
+            self.old_im = Image.open('plate.png')
+        else:
+            self.im = Image.new('RGB', (self.furniture_plan.size().width(), self.furniture_plan.size().height()), (254,220,255))
+            self.old_im = Image.new('RGB', (self.furniture_plan.size().width(), self.furniture_plan.size().height()),
+                                    'black')
         self.undo_button.clicked.connect(self.undo)
         self.rendo_button.clicked.connect(self.rendo)
         self.apply_button.clicked.connect(self.apply)

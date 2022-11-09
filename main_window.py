@@ -20,11 +20,12 @@ class MainWindowClass(QMainWindow):
         self.setupUi()
 
     def setupUi(self):
+
         MainWindow = self
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1009, 854)
         MainWindow.setMaximumSize(QtCore.QSize(1009, 854))
-        MainWindow.setStyleSheet("background: rgb(118, 118, 118)")
+        MainWindow.setStyleSheet("background: rgb(195,146,255)")
         self.setMouseTracking(True)
 
         self.moving = False
@@ -43,17 +44,17 @@ class MainWindowClass(QMainWindow):
         self.save_load_horisontal_box.setObjectName("save_load_horisontal_box")
         self.save_button = QtWidgets.QPushButton(self.centralwidget)
         self.save_button.setStyleSheet("QPushButton {\n"
-                                       "  background: rgb(255, 0, 0);\n"
+                                       "  background: rgb(252,146,255);\n"
                                        "}\n"
                                        "\n"
                                        "QPushButton:pressed{\n"
-                                       "  background: rgb(38, 132, 255)\n"
+                                       "  background: rgb(39,40,255)\n"
                                        "}")
         self.save_button.setObjectName("save_button")
         self.save_load_horisontal_box.addWidget(self.save_button)
         self.load_button = QtWidgets.QPushButton(self.centralwidget)
         self.load_button.setStyleSheet("QPushButton {\n"
-                                       "  background: rgb(255, 0, 0);\n"
+                                       "  background: rgb(252,146,255);\n"
                                        "}\n"
                                        "\n"
                                        "QPushButton:pressed{\n"
@@ -64,7 +65,7 @@ class MainWindowClass(QMainWindow):
         self.verticalLayout.addLayout(self.save_load_horisontal_box)
         self.open_button = QtWidgets.QPushButton(self.centralwidget)
         self.open_button.setStyleSheet("QPushButton {\n"
-                                       "  background: rgb(255, 0, 0);\n"
+                                       "  background: rgb(252,146,255);\n"
                                        "}\n"
                                        "\n"
                                        "QPushButton:pressed{\n"
@@ -79,7 +80,7 @@ class MainWindowClass(QMainWindow):
         sizePolicy.setHeightForWidth(self.main_plan.sizePolicy().hasHeightForWidth())
         self.main_plan.setSizePolicy(sizePolicy)
         self.main_plan.setMinimumSize(QtCore.QSize(700, 750))
-        self.main_plan.setStyleSheet("background: rgb(0, 0, 0)")
+        self.main_plan.setStyleSheet("background: rgb(254,220,255)")
         self.main_plan.setText("")
         self.main_plan.setObjectName("main_plan")
         self.verticalLayout.addWidget(self.main_plan)
@@ -112,7 +113,7 @@ class MainWindowClass(QMainWindow):
         self.add_furniture.setSizePolicy(sizePolicy)
         self.add_furniture.setMinimumSize(QtCore.QSize(280, 0))
         self.add_furniture.setStyleSheet("QPushButton {\n"
-                                         "  background: rgb(255, 0, 0);\n"
+                                         "  background: rgb(224,160,195);\n"
                                          "}\n"
                                          "\n"
                                          "QPushButton:pressed{\n"
@@ -125,7 +126,7 @@ class MainWindowClass(QMainWindow):
         self.target = ''
         self.update_list_furn.setMinimumSize(QtCore.QSize(280, 0))
         self.update_list_furn.setStyleSheet("QPushButton {\n"
-                                         "  background: rgb(255, 0, 0);\n"
+                                         "  background: rgb(224,160,195);\n"
                                          "}\n"
                                          "\n"
                                          "QPushButton:pressed{\n"
@@ -133,6 +134,7 @@ class MainWindowClass(QMainWindow):
                                          "}")
         self.update_list_furn.setObjectName("update_list_furn")
         self.verticalLayout_4.addWidget(self.update_list_furn)
+        self.name = ''
 
         self.horizontalLayout.addLayout(self.verticalLayout_4)
         self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 1)
@@ -157,19 +159,32 @@ class MainWindowClass(QMainWindow):
         self.save_button.setText(_translate("MainWindow", "Сохранить дизайн"))
         self.add_furniture.setText(_translate("MainWindow", "Добавить свою мебель"))
         self.update_list_furn.setText(_translate("MainWindow", "Обновить список мебели"))
+
+        self.im = Image.open('plate.png')
+        self.pix = QPixmap.fromImage(ImageQt(self.im.convert("RGBA")))
+        self.main_plan.setScaledContents(True)
+        self.main_plan.setPixmap(self.pix)
+
         self.add_furniture.clicked.connect(self.new_furniture)
         self.load_button.clicked.connect(self.new_make)
         self.update_list_furn.clicked.connect(self.refresh)
         self.open_button.clicked.connect(self.open_apart)
         self.save_button.clicked.connect(self.save_apart)
 
+
+
+    def new_make(self):
+        self.apart = NewFurnitureApartClass('apartament')
+        self.apart.show()
+
     def save_apart(self):
         try:
             self.con = sqlite3.connect("Furniture_redactor_database.sqlite")
             self.cur = self.con.cursor()
             list_furn = []
+            print(self.furn_list_wiew[0][0])
             for i in self.furn_list_wiew:
-                list_furn.append(f'{i[1][0]}, {i[2][0]}, {i[-2]}, {i[-1]}')
+                list_furn.append(f'{i[1][0]}, {i[2][0]}, {i[-3]}, {i[-2]}, {i[-1]}')
             print("$".join(list_furn))
             self.cur.execute(
                 f'''INSERT INTO apartaments(title,list_of_furniture,apart_image) VALUES("{self.name}1",
@@ -178,10 +193,6 @@ class MainWindowClass(QMainWindow):
             self.con.close()
         except Exception as a:
             print(a)
-
-    def new_make(self):
-        self.apart = NewFurnitureApartClass('apartament')
-        self.apart.show()
 
     def open_apart(self):
         self.con = sqlite3.connect("Furniture_redactor_database.sqlite")
@@ -194,19 +205,19 @@ class MainWindowClass(QMainWindow):
             apart = list(self.cur.execute(f"""SELECT * FROM apartaments
             WHERE title = '{self.name}'""").fetchall()[0])
             self.list_of_furn = apart[2].split('$')
-            print(1)
             self.im_apart = Image.open(apart[3])
-            print(1)
+
             self.pix_apart = QPixmap.fromImage(ImageQt(self.im_apart.convert("RGBA")))
+
             self.main_plan.setScaledContents(True)
 
             self.main_plan.setPixmap(self.pix_apart)
             for furn in self.list_of_furn:
                 if furn:
-                    x, y, angle, title = furn.split(', ')
-                    print(1)
-                    self.add_furn(x=x, y=y, angle=angle)
+                    x, y, sizex, sizey, title = furn.split(', ')
+                    self.add_furn(x=int(x), y=int(y), sizex=int(sizex), sizey=int(sizey), title=title)
         self.con.close()
+
 
     def refresh(self):
         self.close()
@@ -232,6 +243,7 @@ class MainWindowClass(QMainWindow):
             self.img_furniture.setStyleSheet("background: rgb(0, 0, 0)")
             self.img_furniture.setObjectName("img_furniture")
             self.im = Image.open(self.res[i])
+
             self.im = self.im.resize((75, 75))
             self.im.save(self.res[i])
             self.img_furniture.setPixmap(QPixmap(self.res[i]))
@@ -240,8 +252,10 @@ class MainWindowClass(QMainWindow):
             self.verticalLayout_5.setObjectName("verticalLayout_5")
             self.add_button = QtWidgets.QPushButton(name)
 
+
+
             self.add_button.setStyleSheet("QPushButton {\n"
-                                          "  background: rgb(255, 0, 0);\n"
+                                          "  background: rgb(224,160,195);\n"
                                           "}\n"
                                           "\n"
                                           "QPushButton:pressed{\n"
@@ -251,7 +265,7 @@ class MainWindowClass(QMainWindow):
             self.verticalLayout_5.addWidget(self.add_button)
             self.change_button = QtWidgets.QPushButton(name + ' change')
             self.change_button.setStyleSheet("QPushButton {\n"
-                                             "  background: rgb(255, 0, 0);\n"
+                                             "  background: rgb(224,160,195);\n"
                                              "}\n"
                                              "\n"
                                              "QPushButton:pressed{\n"
@@ -267,35 +281,32 @@ class MainWindowClass(QMainWindow):
         self.scroll_of_furniture.setWidget(self.scrollAreaWidgetContents)
         self.con.close()
 
+
     def new_furniture(self):
         self.furn = NewFurnitureApartClass('furniture')
         self.furn.show()
 
-    def add_furn(self, x=1, y=1, angle=0):
+    def add_furn(self, title='', x=100, y=100, angle=0, sizex=100, sizey=100):
+        if title == False:
+            title = self.sender().text()
         self.con = sqlite3.connect("Furniture_redactor_database.sqlite")
         self.cur = self.con.cursor()
         furn = list(self.cur.execute(f"""SELECT * FROM furniture
-        WHERE title = '{self.sender().text()}'""").fetchall()[0])
-        self.im_furn = Image.open(furn[3])
-        angle, ok_pressed = QInputDialog.getInt(
-            self, "Введите угол", "Значение угла",
-            0, 0, 360, 1)
-        if ok_pressed:
-            self.im_furn.rotate(angle)
-            self.lab_furn = QLabel(self.main_plan)
-            self.lab_furn.move(x, y)
+        WHERE title = '{title}'""").fetchall()[0])
 
-            im1 = QPixmap.fromImage(ImageQt(furn[3]))
-            self.new_fut = QtWidgets.QLabel(self.centralwidget)
-            self.new_fut.setGeometry(QtCore.QRect(100, 100, int(furn[2].split(', ')[0][1:]), int(furn[2].split(', ')[1][:-1])))
-            self.new_fut.setObjectName("label")
-            self.new_fut.setScaledContents(True)
-            self.new_fut.setPixmap(im1)
-            self.new_fut.setAcceptDrops(True)
-            self.new_fut.show()
 
-            self.furn_list_wiew.append([self.new_fut, range(100, 100 + int(furn[2].split(', ')[0][1:])), range(100, 100 + int(furn[2].split(', ')[1][:-1])), int(furn[2].split(', ')[0][1:]), int(furn[2].split(', ')[1][:-1]), angle, self.sender().text()])
-            self.setCentralWidget(self.centralwidget)
+        im1 = QPixmap.fromImage(ImageQt(furn[3]))
+        self.new_fut = QtWidgets.QLabel(self.centralwidget)
+        self.new_fut.setGeometry(QtCore.QRect(x, y, int(furn[2].split(', ')[0][1:]), int(furn[2].split(', ')[1][:-1])))
+        self.new_fut.setObjectName("label")
+        self.new_fut.setScaledContents(True)
+        self.new_fut.setPixmap(im1)
+        self.new_fut.setAcceptDrops(True)
+        self.new_fut.show()
+
+
+        self.furn_list_wiew.append([self.new_fut, range(x, x + int(furn[2].split(', ')[0][1:])), range(y, y + int(furn[2].split(', ')[1][:-1])), int(furn[2].split(', ')[0][1:]), int(furn[2].split(', ')[1][:-1]), title])
+        self.setCentralWidget(self.centralwidget)
 
     def mouseMoveEvent(self, event):
         print(self.target)
@@ -304,6 +315,7 @@ class MainWindowClass(QMainWindow):
                 self.furn_list_wiew[self.target][0].move(event.x(), event.y())
                 self.furn_list_wiew[self.target][1] = range(event.x(), event.x() + self.furn_list_wiew[self.target][3])
                 self.furn_list_wiew[self.target][2] = range(event.y(), event.y() + self.furn_list_wiew[self.target][4])
+
 
     def mousePressEvent(self, a0: QtGui.QMouseEvent):
         for i in range(len(self.furn_list_wiew)):
@@ -320,6 +332,7 @@ class MainWindowClass(QMainWindow):
                 self.furn_list_wiew[self.target][0].setVisible(False)
                 self.furn_list_wiew.pop(self.target)
 
+
     def change_size(self):
         self.con = sqlite3.connect("Furniture_redactor_database.sqlite")
         self.cur = self.con.cursor()
@@ -332,3 +345,4 @@ class MainWindowClass(QMainWindow):
                 WHERE title = '{self.sender().text()[:-7]}'""")
         self.con.commit()
         self.con.close()
+
