@@ -19,7 +19,12 @@ class NewFurnitureApartClass(QWidget):
     def __init__(self, obj):
         super().__init__()
         self.obj = obj
+        self.isclosed = False
         self.setupUi()
+
+    def closeEvent(self, a0: QtGui.QCloseEvent):
+        self.isclosed = True
+        a0.accept()
 
     def setupUi(self):
         Form = self
@@ -150,7 +155,10 @@ class NewFurnitureApartClass(QWidget):
         self.rendo_button.clicked.connect(self.rendo)
         self.apply_button.clicked.connect(self.apply)
         self.color_button.clicked.connect(self.pick_color)
-        self.exit_button.clicked.connect(self.close)
+        self.exit_button.clicked.connect(self.closed)
+
+    def closed(self):
+        self.close()
 
     def pick_color(self):
         self.brushColor = QColorDialog.getColor().getRgb()
@@ -224,7 +232,7 @@ class NewFurnitureApartClass(QWidget):
                     "","images_apart/{self.lineEdit.text()}.png")''')
                 self.con.commit()
                 self.con.close()
-        self.close()
+        self.closed()
 
     def crop(self, im):
         pixels = im.load()
