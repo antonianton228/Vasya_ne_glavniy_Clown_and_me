@@ -145,7 +145,8 @@ class MainWindowClass(QMainWindow):
         self.window_list_furns.show()
 
     def save_apart(self):
-        try:
+        print(self.name)
+        if self.name != '':
             self.con = sqlite3.connect("Furniture_redactor_database.sqlite")
             self.cur = self.con.cursor()
             list_furn = []
@@ -157,8 +158,6 @@ class MainWindowClass(QMainWindow):
                 "{"$".join(list_furn)}","images_apart/{self.name}.png")''')
             self.con.commit()
             self.con.close()
-        except Exception as a:
-            print(a)
 
     def new_make(self):
         self.apart = NewFurnitureApartClass('apartament')
@@ -172,6 +171,9 @@ class MainWindowClass(QMainWindow):
             self, "Выберите квартиру", "Какая вам нужна?",
             aparts, 1, False)
         if ok_pressed:
+            for i in self.furn_list_wiew:
+                i[0].setVisible(False)
+            self.furn_list_wiew = []
             apart = list(self.cur.execute(f"""SELECT * FROM apartaments
             WHERE title = '{self.name}'""").fetchall()[0])
             self.list_of_furn = apart[2].split('$')
