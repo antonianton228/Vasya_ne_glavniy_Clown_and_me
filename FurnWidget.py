@@ -1,8 +1,9 @@
 import sqlite3
 
 from PIL import Image
+
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QInputDialog, QWidget
+from PyQt5.QtWidgets import QInputDialog, QErrorMessage, QWidget
 
 from FurnituerWidget import Ui_RurnitureWidget
 
@@ -14,11 +15,14 @@ class WidgetFurn(QWidget):
         self.ui.setupUi(self)
         self.name_furn = name_furn
         self.id_furn = id_furn
+        self.initui()
+
+    def initui(self):
         self.ui.groupBox.setTitle(str(self.name_furn))
         self.ui.change_button.clicked.connect(self.change_size)
 
         self.ui.add_button.setText(self.name_furn)
-        self.ui.change_button.setText(self.name_furn)
+        self.ui.change_button.setText('Изменить размер ' + self.name_furn)
 
         con = sqlite3.connect("Furniture_redactor_database.sqlite")
         cur = con.cursor()
@@ -32,12 +36,15 @@ class WidgetFurn(QWidget):
     def change_size(self):
         con = sqlite3.connect("Furniture_redactor_database.sqlite")
         cur = con.cursor()
-        size, ok_pressed = QInputDialog.getText(self, "Размеры",
-                                                "Введите размеры через пробел")
-        if ok_pressed:
-            cur.execute(
-                f"""UPDATE furniture
-                        SET size = '{tuple(map(int, size.split()))}'
-                        WHERE title = '{self.sender().text()[:-7]}'""")
+        size, ok_pressed = QInputDialog.getText(self, "Размеры", "Введите размеры через пробел")
+        try:
+            if ok_pressed:
+                cur.execute(
+                    f"""UPDATE furniture
+                            SET size = '{tuple(map(int, size.split()))}'
+                            WHERE title = '{self.sender().text()[16:]}'""")
+        except Exception:
+            error = QErrorMessage(self)
+            error.showMessage('Ошибка, вы внесли неверные данные.')
         con.commit()
         con.close()

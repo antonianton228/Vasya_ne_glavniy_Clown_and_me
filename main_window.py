@@ -1,16 +1,14 @@
-import os
 import sqlite3
-import sys
-from sys import argv, executable
+
+from PIL import Image
+from PIL.ImageQt import ImageQt
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PIL import Image, ImageDraw
-from PIL.ImageQt import ImageQt
-from PyQt5.QtCore import Qt, QSize
-from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QMainWindow, QLabel, QWidget, QVBoxLayout, QApplication, QInputDialog
-from new_furniture_or_apart_window import NewFurnitureApartClass
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QPixmap, QTransform
+from PyQt5.QtWidgets import QMainWindow, QInputDialog
 
+from new_furniture_or_apart_window import NewFurnitureApartClass
 from FurnLayuot import WidgetListFurn
 
 
@@ -104,12 +102,12 @@ class MainWindowClass(QMainWindow):
         self.ListFurnButton = QtWidgets.QPushButton(self.centralwidget)
         self.ListFurnButton.setObjectName("ListFurnButton")
         self.ListFurnButton.setStyleSheet("QPushButton {\n"
-                                         "  background: rgb(224,160,195);\n"
-                                         "}\n"
-                                         "\n"
-                                         "QPushButton:pressed{\n"
-                                         "  background: rgb(255, 255, 0);\n"
-                                         "}")
+                                          "  background: rgb(224,160,195);\n"
+                                          "}\n"
+                                          "\n"
+                                          "QPushButton:pressed{\n"
+                                          "  background: rgb(255, 255, 0);\n"
+                                          "}")
         self.verticalLayout_3.addWidget(self.ListFurnButton)
         self.gridLayout.addLayout(self.verticalLayout_3, 0, 1, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
@@ -123,6 +121,7 @@ class MainWindowClass(QMainWindow):
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
         self.init_par()
         self.pix_main_plan()
 
@@ -159,25 +158,27 @@ class MainWindowClass(QMainWindow):
         self.window_list_furns = WidgetListFurn(self)
         self.window_list_furns.show()
 
-    def save_apart(self):
-        print(self.name)
-        if self.name != '':
-            self.con = sqlite3.connect("Furniture_redactor_database.sqlite")
-            self.cur = self.con.cursor()
-            list_furn = []
-            print(self.furn_list_wiew[0][0])
-            for i in self.furn_list_wiew:
-                list_furn.append(f'{i[1][0]}, {i[2][0]}, {i[-3]}, {i[-2]}, {i[-1]}')
-            print("$".join(list_furn))
-            self.cur.execute(
-                f'''INSERT INTO apartaments(title,list_of_furniture,apart_image) VALUES("{self.name}1",
-                        "{"$".join(list_furn)}","images_apart/{self.name}.png")''')
-            self.con.commit()
-            self.con.close()
-
     def new_make(self):
         self.apart = NewFurnitureApartClass('apartament')
         self.apart.show()
+
+    def new_furniture(self):
+        self.furn = NewFurnitureApartClass('furniture')
+        self.furn.show()
+
+    def save_apart(self):
+        con = sqlite3.connect("Furniture_redactor_database.sqlite")
+        cur = con.cursor()
+        name, ok_pressed = QInputDialog.getText(self, "Название квартиры", "Введите название квартиры")
+        if ok_pressed:
+            list_furn = []
+            for i in self.furn_list_wiew:
+                list_furn.append(f'{i[1][0]}, {i[2][0]}, {i[-3]}, {i[-2]}, {i[-1]}')
+            cur.execute(
+                f'''INSERT INTO apartaments(title,list_of_furniture,apart_image) VALUES("{name}",
+                        "{"$".join(list_furn)}","images_apart/{self.name}.png")''')
+            con.commit()
+            con.close()
 
     def open_apart(self):
         self.con = sqlite3.connect("Furniture_redactor_database.sqlite")
@@ -194,48 +195,52 @@ class MainWindowClass(QMainWindow):
                     WHERE title = '{self.name}'""").fetchall()[0])
             self.list_of_furn = apart[2].split('$')
             self.im_apart = Image.open(apart[3])
-
             self.pix_apart = QPixmap.fromImage(ImageQt(self.im_apart.convert("RGBA")))
 
             self.main_plan.setScaledContents(True)
-
             self.main_plan.setPixmap(self.pix_apart)
             for furn in self.list_of_furn:
                 if furn:
                     x, y, sizex, sizey, title = furn.split(', ')
-                    self.add_furn(x=int(x), y=int(y), sizex=int(sizex), sizey=int(sizey), title=title)
+                    self.add_furn(x=int(x), y=int(y), title=title)
         self.con.close()
 
-    def new_furniture(self):
-        self.furn = NewFurnitureApartClass('furniture')
-        self.furn.show()
-
-    def add_furn(self, title='', x=100, y=100, angle=0, sizex=100, sizey=100):
-        if title == False:
+    def add_furn(self, title='', x=100, y=100, angle=0):
+        f = True
+        if not title:
             title = self.sender().text()
+            f = False
         self.con = sqlite3.connect("Furniture_redactor_database.sqlite")
         self.cur = self.con.cursor()
         furn = list(self.cur.execute(f"""SELECT * FROM furniture
         WHERE title = '{title}'""").fetchall()[0])
+        if not f:
+            angle, f = QInputDialog.getItem(
+                self, "Выберете угол мебели", "Значение угла",
+                ("0", "90", "180", "270"), 0, False)
+        if f:
+            im1 = QPixmap.fromImage(ImageQt(furn[3]))
+            transe = QTransform().rotate(int(angle))
+            im1 = QPixmap(im1.transformed(transe))
+            self.new_fut = QtWidgets.QLabel(self.centralwidget)
+            self.new_fut.setGeometry(
+                QtCore.QRect(x, y, int(furn[2].split(', ')[0][1:]), int(furn[2].split(', ')[1][:-1])))
+            self.new_fut.setObjectName("label")
+            self.new_fut.setScaledContents(True)
+            self.new_fut.setPixmap(im1)
+            self.new_fut.setAcceptDrops(True)
+            self.new_fut.show()
 
-
-        im1 = QPixmap.fromImage(ImageQt(furn[3]))
-        self.new_fut = QtWidgets.QLabel(self.centralwidget)
-        self.new_fut.setGeometry(QtCore.QRect(x, y, int(furn[2].split(', ')[0][1:]), int(furn[2].split(', ')[1][:-1])))
-        self.new_fut.setObjectName("label")
-        self.new_fut.setScaledContents(True)
-        self.new_fut.setPixmap(im1)
-        self.new_fut.setAcceptDrops(True)
-        self.new_fut.show()
-
-
-        self.furn_list_wiew.append([self.new_fut, range(x, x + int(furn[2].split(', ')[0][1:])), range(y, y + int(furn[2].split(', ')[1][:-1])), int(furn[2].split(', ')[0][1:]), int(furn[2].split(', ')[1][:-1]), title])
+        self.furn_list_wiew.append([self.new_fut, range(x, x + int(furn[2].split(', ')[0][1:])),
+                                    range(y, y + int(furn[2].split(', ')[1][:-1])), int(furn[2].split(', ')[0][1:]),
+                                    int(furn[2].split(', ')[1][:-1]), title])
         self.setCentralWidget(self.centralwidget)
 
     def mouseMoveEvent(self, event):
         if self.moving:
-            if event.x() + self.furn_list_wiew[self.target][3] < 710 and event.y() + self.furn_list_wiew[self.target][
-                4] < 810 and event.x() > 10 and event.y() > 70:
+            if event.x() + self.furn_list_wiew[self.target][3] < 710 \
+                    and event.y() + self.furn_list_wiew[self.target][4] < 810 \
+                    and event.x() > 10 and event.y() > 70:
                 self.furn_list_wiew[self.target][0].move(event.x(), event.y())
                 self.furn_list_wiew[self.target][1] = range(event.x(), event.x() + self.furn_list_wiew[self.target][3])
                 self.furn_list_wiew[self.target][2] = range(event.y(), event.y() + self.furn_list_wiew[self.target][4])
