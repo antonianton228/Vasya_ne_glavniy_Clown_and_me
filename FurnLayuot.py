@@ -27,4 +27,4 @@ class WidgetListFurn(QWidget):
         con.close()
 
     def press_add(self):
-        self.main_window.add_furn()
+        self.main_window.add_furn(title=self.sender().text())
